@@ -2,13 +2,15 @@
   "name": "tool-registry-schemas",
   "version": "0.1.0",
   "devDependencies": {
-    "@redocly/openapi-cli": "^1.0.0-beta.18",
-    "gh-openapi-docs-ts": "^0.3.4"
+    "@redocly/openapi-cli": "^1.0.0-beta.22",
+    "gh-openapi-docs-ts": "^0.3.4",
+    "ibm-openapi-validator": "^0.31.1"
   },
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/openapi preview-docs",
     "build": "./node_modules/.bin/openapi bundle -o dist openapi/openapi.yaml",
-    "lint": "./node_modules/.bin/openapi lint openapi/openapi.yaml"
+    "lint": "./node_modules/.bin/openapi lint openapi/openapi.yaml",
+    "lint:ibm": "npm run build && lint-openapi dist.yaml"
   }
 }
