@@ -1,0 +1,18 @@
+type: object
+description: An organization
+properties:
+  id:
+    type: string
+    readOnly: true
+  name:
+    description: The organization name
+    type: string
+    minLength: 3
+    maxLength: 60
+  url:
+    description: The URL to the homepage of the organization
+    type: string
+    format: uri
+required:
+  - name
+  - url

@@ -1,0 +1,11 @@
+type: object
+description: A page of Tools
+allOf:
+  - $ref: ResponsePageMetadata.yaml
+  - type: object
+    properties:
+      patients:
+        description: An array of Tools
+        type: array
+        items:
+          $ref: Tool.yaml
