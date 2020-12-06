@@ -10,7 +10,7 @@
     },
     "license": {
       "name": "Apache 2.0",
-      "url": "https://github.com/Sage-Bionetworks/tool-registry-schemas/blob/develop/LICENSE"
+      "url": "https://github.com/Sage-Bionetworks/tool-registry-schemas"
     },
     "x-logo": {
       "url": "https://Sage-Bionetworks.github.io/tool-registry-schemas/logo.png"
