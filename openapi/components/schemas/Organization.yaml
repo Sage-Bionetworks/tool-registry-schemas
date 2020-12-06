@@ -1,0 +1,12 @@
+type: object
+description: Organization
+properties:
+  id:
+    type: string
+    readOnly: true
+  name:
+    type: string
+  url:
+    type: string
+required:
+  - name
