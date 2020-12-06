@@ -15,14 +15,14 @@ post:
       content:
         application/json:
           schema:
-            $ref: ../../commons/components/schemas/Tool.yaml
+            $ref: ../components/schemas/Tool.yaml
       description: Success
     '403':
-      $ref: ../../commons/components/responses/Unauthorized.yaml
+      $ref: ../components/responses/Unauthorized.yaml
     '404':
-      $ref: ../../commons/components/responses/NotFound.yaml
+      $ref: ../components/responses/NotFound.yaml
     '409':
-      $ref: ../../commons/components/responses/Conflict.yaml
+      $ref: ../components/responses/Conflict.yaml
 get:
   tags:
     - Tool
@@ -55,6 +55,6 @@ get:
             $ref: ../components/schemas/PageOfTools.yaml
       description: Success
     '403':
-      $ref: ../../commons/components/responses/Unauthorized.yaml
+      $ref: ../components/responses/Unauthorized.yaml
     '404':
-      $ref: ../../commons/components/responses/NotFound.yaml
+      $ref: ../components/responses/NotFound.yaml
