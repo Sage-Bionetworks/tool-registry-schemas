@@ -197,7 +197,7 @@ components:
         - $ref: '#/components/schemas/ResponsePageMetadata'
         - type: object
           properties:
-            patients:
+            tools:
               description: An array of Tools
               type: array
               items:
