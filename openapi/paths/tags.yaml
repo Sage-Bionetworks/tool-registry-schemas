@@ -1,21 +1,27 @@
 post:
   tags:
-    - Tool
-  summary: Add a tool
-  description: Adds a tool
-  operationId: createTool
+    - Tag
+  summary: Create a tag
+  description: Create a tag with the specified name
+  operationId: "createTag"
+  parameters:
+    - in: query
+      name: tagId
+      description: The ID of the tag that is being created
+      required: true
+      schema:
+        $ref: ../components/parameters/TagId.yaml
   requestBody:
-    required: true
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/Tool.yaml
+          $ref: ../components/schemas/Tag.yaml
   responses:
     '200':
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/Tool.yaml
+            $ref: ../components/schemas/Tag.yaml
       description: Success
     '400':
       $ref: ../components/responses/BadRequest.yaml
@@ -28,10 +34,10 @@ post:
 
 get:
   tags:
-    - Tool
-  summary: List all the tools
-  description: Returns all the tools
-  operationId: listTools
+    - Tag
+  summary: Get all tags
+  description: Returns the tags
+  operationId: "listTags"
   parameters:
     - in: query
       name: limit
@@ -55,7 +61,7 @@ get:
       description: Object that describes how to filter the results
       required: false
       schema:
-        $ref: ../components/schemas/ToolFilter.yaml
+        $ref: ../components/schemas/TagFilter.yaml
       style: deepObject
       explode: true
   responses:
@@ -63,11 +69,10 @@ get:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/PageOfTools.yaml
+            $ref: ../components/schemas/PageOfTags.yaml
       description: Success
-    '400':
-      $ref: ../components/responses/BadRequest.yaml
     '403':
       $ref: ../components/responses/Unauthorized.yaml
     '404':
       $ref: ../components/responses/NotFound.yaml
+

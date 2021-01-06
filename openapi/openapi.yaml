@@ -20,9 +20,24 @@ info:
 tags:
   - name: Tool
     description: Operations about tools
+  - name: Tag
+    description: Operations about tags
+
 servers:
-  - url: 'http://example.com/api/v1'
-  - url: 'https://example.com/api/v1'
+  - url: "{protocol}://tool-registry.org/api/v1"
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: https
+
 paths:
+  /tags:
+    $ref: paths/tags.yaml
+  /tags/{tagId}:
+    $ref: paths/tags@{tagId}.yaml
   /tools:
     $ref: 'paths/tools.yaml'
+  /tools/{toolId}:
+    $ref: 'paths/tools@{toolId}.yaml'
