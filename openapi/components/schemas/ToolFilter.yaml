@@ -1,0 +1,9 @@
+type: object
+description: An object that describes how to filter Tools
+properties:
+  name:
+    description: Keep the tools whose name include this term
+    type: string
+  tag:
+    description: Keep the tools associated to this tag
+    type: string

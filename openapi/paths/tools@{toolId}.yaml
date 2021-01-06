@@ -1,0 +1,43 @@
+parameters:
+  - in: path
+    name: toolId
+    description: The ID of the tool
+    required: true
+    schema:
+      $ref: ../components/parameters/ToolId.yaml
+
+get:
+  tags:
+    - Tool
+  summary: Get a tool
+  description: Returns the tool specified
+  operationId: getTool
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Tool.yaml
+    '403':
+      $ref: ../components/responses/Unauthorized.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
+
+delete:
+  tags:
+    - Tool
+  summary: Delete a tool
+  description: Deletes the tool specified
+  operationId: deleteTool
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Tool.yaml
+    '403':
+      $ref: ../components/responses/Unauthorized.yaml
+    '404':
+      $ref: ../components/responses/NotFound.yaml
