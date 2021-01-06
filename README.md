@@ -9,7 +9,7 @@ The OpenAPI specification implemented by the Tool Registry.
 ## Releases
 
 - <https://sage-bionetworks.github.io/tool-registry-schemas/latest/docs/>
-- <https://sage-bionetworks.github.io/tool-registry-schemas/0.1.0/docs/>
+- <https://sage-bionetworks.github.io/tool-registry-schemas/0.1.1/docs/>
 - <https://sage-bionetworks.github.io/tool-registry-schemas/0.1/docs/>
 - <https://sage-bionetworks.github.io/tool-registry-schemas/0/docs/>
 - <https://sage-bionetworks.github.io/tool-registry-schemas/edge/docs/>
