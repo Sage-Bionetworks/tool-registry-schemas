@@ -2,4 +2,4 @@
 dist
 dist.yaml
 node_modules
-.idea
+openapi.yaml
