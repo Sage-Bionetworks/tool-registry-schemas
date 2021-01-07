@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "version": "0.1.0",
+    "version": "0.1.1",
     "title": "Tool Registry API",
     "contact": {
       "name": "The Tool Registry Team",
@@ -21,24 +21,215 @@
     {
       "name": "Tool",
       "description": "Operations about tools"
+    },
+    {
+      "name": "Tag",
+      "description": "Operations about tags"
     }
   ],
   "servers": [
     {
-      "url": "http://example.com/api/v1"
-    },
-    {
-      "url": "https://example.com/api/v1"
+      "url": "{protocol}://tool-registry.org/api/v1",
+      "variables": {
+        "protocol": {
+          "enum": [
+            "http",
+            "https"
+          ],
+          "default": "https"
+        }
+      }
     }
   ],
   "paths": {
+    "/tags": {
+      "post": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Create a tag",
+        "description": "Create a tag with the specified name",
+        "operationId": "createTag",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tagId",
+            "description": "The ID of the tag that is being created",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TagId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tag"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/components/responses/Conflict"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Get all tags",
+        "description": "Returns the tags",
+        "operationId": "listTags",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Maximum number of results returned",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10,
+              "minimum": 10,
+              "maximum": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "Index of the first result that must be returned",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "description": "Object that describes how to filter the results",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/TagFilter"
+            },
+            "style": "deepObject",
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageOfTags"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/tags/{tagId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "tagId",
+          "description": "The ID of the tag",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/TagId"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Get a tag",
+        "description": "Returns the tag specified",
+        "operationId": "getTag",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Delete a tag",
+        "description": "Deletes the tag specified",
+        "operationId": "deleteTag",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
     "/tools": {
       "post": {
         "tags": [
           "Tool"
         ],
         "summary": "Add a tool",
-        "description": "Add a tool",
+        "description": "Adds a tool",
         "operationId": "createTool",
         "requestBody": {
           "required": true,
@@ -61,6 +252,9 @@
             },
             "description": "Success"
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -76,8 +270,8 @@
         "tags": [
           "Tool"
         ],
-        "summary": "List the tools in the registry",
-        "description": "Returns the tools in the registry",
+        "summary": "List all the tools",
+        "description": "Returns all the tools",
         "operationId": "listTools",
         "parameters": [
           {
@@ -102,6 +296,17 @@
               "default": 0,
               "minimum": 0
             }
+          },
+          {
+            "in": "query",
+            "name": "filter",
+            "description": "Object that describes how to filter the results",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ToolFilter"
+            },
+            "style": "deepObject",
+            "explode": true
           }
         ],
         "responses": {
@@ -115,6 +320,74 @@
             },
             "description": "Success"
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/tools/{toolId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "toolId",
+          "description": "The ID of the tool",
+          "required": true,
+          "schema": {
+            "$ref": "#/components/schemas/ToolId"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Tool"
+        ],
+        "summary": "Get a tool",
+        "description": "Returns the tool specified",
+        "operationId": "getTool",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tool"
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tool"
+        ],
+        "summary": "Delete a tool",
+        "description": "Deletes the tool specified",
+        "operationId": "deleteTool",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tool"
+                }
+              }
+            }
+          },
           "403": {
             "$ref": "#/components/responses/Unauthorized"
           },
@@ -127,6 +400,16 @@
   },
   "components": {
     "schemas": {
+      "TagFilter": {
+        "type": "object",
+        "description": "An object that describes how to filter Tags",
+        "properties": {
+          "tagId": {
+            "description": "Keep the tags whose tagId starts with this term",
+            "type": "string"
+          }
+        }
+      },
       "ResponsePageMetadata": {
         "type": "object",
         "description": "A page of results",
@@ -157,14 +440,99 @@
           "links"
         ]
       },
+      "TagId": {
+        "description": "The ID of the tag",
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 60,
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "example": "awesome-tag"
+      },
+      "Tag": {
+        "type": "object",
+        "description": "A tag that can be assigned to a resource",
+        "properties": {
+          "tagId": {
+            "$ref": "#/components/schemas/TagId"
+          },
+          "description": {
+            "description": "A short description of the tag",
+            "type": "string"
+          }
+        }
+      },
+      "PageOfTags": {
+        "type": "object",
+        "description": "A page of Tags",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResponsePageMetadata"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "tags": {
+                "description": "An array of Tags",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "description": "Problem details (tools.ietf.org/html/rfc7807)",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A human readable documentation for the problem type"
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code"
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem"
+          },
+          "type": {
+            "type": "string",
+            "description": "An absolute URI that identifies the problem type"
+          }
+        },
+        "required": [
+          "title",
+          "status"
+        ]
+      },
+      "ToolFilter": {
+        "type": "object",
+        "description": "An object that describes how to filter Tools",
+        "properties": {
+          "name": {
+            "description": "Keep the tools whose name include this term",
+            "type": "string"
+          },
+          "tag": {
+            "description": "Keep the tools associated to this tag",
+            "type": "string"
+          }
+        }
+      },
+      "ToolId": {
+        "description": "The ID of the tool",
+        "type": "string",
+        "example": "507f1f77bcf86cd799439011"
+      },
       "Tool": {
         "type": "object",
         "description": "A tool",
         "properties": {
-          "id": {
-            "description": "The ID of the tool",
-            "type": "string",
-            "readOnly": true
+          "toolId": {
+            "$ref": "#/components/schemas/ToolId"
           },
           "name": {
             "description": "The tool name",
@@ -248,6 +616,13 @@
             "description": "The URL to the homepage of the tool",
             "type": "string",
             "format": "uri"
+          },
+          "tags": {
+            "description": "The tags associated to the tool",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagId"
+            }
           }
         }
       },
@@ -271,32 +646,6 @@
             }
           }
         ]
-      },
-      "Error": {
-        "type": "object",
-        "description": "Problem details (tools.ietf.org/html/rfc7807)",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A human readable documentation for the problem type"
-          },
-          "status": {
-            "type": "integer",
-            "description": "The HTTP status code"
-          },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem"
-          },
-          "type": {
-            "type": "string",
-            "description": "An absolute URI that identifies the problem type"
-          }
-        },
-        "required": [
-          "title",
-          "status"
-        ]
       }
     },
     "responses": {
@@ -312,6 +661,16 @@
       },
       "NotFound": {
         "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Invalid request",
         "content": {
           "application/json": {
             "schema": {
